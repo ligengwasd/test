@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+
+    <!--<user-service properties="classpath:users.properties"/>-->
+
+    <!--<http auto-config="true">-->
+        <!--<intercept-url pattern="/*" access="ROLE_USER"/>-->
+        <!--&lt;!&ndash;<form-login login-page="/auth/login"&ndash;&gt;-->
+                    <!--&lt;!&ndash;always-use-default-target="true"&ndash;&gt;-->
+                    <!--&lt;!&ndash;authentication-failure-url="/auth/login"&ndash;&gt;-->
+                    <!--&lt;!&ndash;default-target-url=""&ndash;&gt;-->
+    <!--</http>-->
+    <!--<authentication-manager alias="manager">-->
+        <!--&lt;!&ndash; 权限提供者 &ndash;&gt;-->
+        <!--<authentication-provider>-->
+        <!--&lt;!&ndash; 可提供登陆访问的用户 &ndash;&gt;-->
+            <!--<user-service>-->
+                <!--<user name="haha" password="haha" authorities="ROLE_USER, ROLE_ADMIN" />-->
+                <!--<user name="xixi" password="xixi" authorities="ROLE_USER" />-->
+            <!--</user-service>-->
+        <!--</authentication-provider>-->
+    <!--</authentication-manager>-->
+
+
+    <!--<http auto-config="true" use-expressions="true">-->
+        <!--<intercept-url pattern="/*" access="hasRole('ROLE_USER')"/>-->
+    <!--</http>-->
+
+    <!--<authentication-manager alias="authenticationManager">-->
+        <!--<authentication-provider>-->
+            <!--<user-service>-->
+                <!--<user authorities="ROLE_USER" name="guest" password="guest"/>-->
+            <!--</user-service>-->
+        <!--</authentication-provider>-->
+    <!--</authentication-manager>-->
+
+
+    <!--<http auto-config="true">-->
+        <!--<intercept-url pattern="/*" access="ROLE_USER"/>-->
+    <!--</http>-->
+    <!--<authentication-manager alias="authenticationManager">-->
+        <!--<authentication-provider>-->
+            <!--<user-service>-->
+                <!--<user authorities="ROLE_USER" name="guest" password="guest"/>-->
+            <!--</user-service>-->
+        <!--</authentication-provider>-->
+    <!--</authentication-manager>-->
+
+    <!--<csrf disabled="true"/>-->
+
+    <http pattern="/auth/login" security="none"/>
+
+    <http>
+        <intercept-url pattern="/**" access="hasRole('USER')" />
+        <form-login login-page='/auth/login' default-target-url="/index/demo"/>
+        <logout />
+        <csrf disabled="true"/>
+    </http>
+
+
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="jimi" password="jimispassword" authorities="ROLE_USER, ROLE_ADMIN" />
+                <user name="bob" password="bobspassword" authorities="ROLE_USER" />
+                <user name="ligeng" authorities="ROLE_USER" password="123456" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+</beans:beans>

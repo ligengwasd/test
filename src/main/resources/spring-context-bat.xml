@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+
+    <context:property-placeholder location="classpath:properties/jdbc.properties,classpath:properties/redis.properties,classpath:properties/mail.properties"/>
+    <import resource="spring-mybatis.xml"/>
+
+
+    <!--<import resource="redis-context.xml"/>-->
+    <!--<import resource="spring-jms.xml"/>-->
+    <!-- 设置使用注解的类所在的jar包 -->
+    <!--<context:component-scan base-package="com.ligeng">-->
+        <!--<context:exclude-filter type="regex" expression="com\.ligeng\.test.*"/>-->
+        <!--&lt;!&ndash;<context:exclude-filter type="regex" expression="com\.ligeng\.common.*"/>&ndash;&gt;-->
+    <!--</context:component-scan>-->
+
+    <!--<aop:aspectj-autoproxy />-->
+
+
+    <!--<bean id="myAspect" class="com.ligeng.aoptest.MyAspect"/>-->
+    <!--<bean id="concurrentOperationExecutor" class="com.ligeng.aoptest.ConcurrentOperationExecutor">-->
+        <!--<property name="maxRetries" value="3"/>-->
+        <!--<property name="order" value="100"/>-->
+    <!--</bean>-->
+
+    <!--<aop:config>-->
+        <!--<aop:pointcut id="allMethod" expression="execution(* com.ligeng.aoptest.*.*(..))"/>-->
+        <!--<aop:pointcut id="allMethod" expression="execution(* com.ligeng.controller.*.*(..))"/>-->
+        <!--<aop:aspect ref="concurrentOperationExecutor">-->
+            <!--<aop:around method="doConcurrentOperation" pointcut-ref="allMethod"/>-->
+        <!--</aop:aspect>-->
+
+    <!--</aop:config>-->
+
+    <!--validation aop-->
+    <!--<bean id="validAspect" class="com.ligeng.validation.aspect.ValidAspect"/>-->
+    <!--<aop:config>-->
+    <!--<aop:pointcut id="controllers" expression="execution(* com.ligeng.controller.*.*(..))" />-->
+    <!--<aop:aspect ref="concurrentOperationExecutor">-->
+    <!--<aop:around method="doConcurrentOperation" pointcut-ref="controllers"/>-->
+    <!--</aop:aspect>-->
+    <!--</aop:config>-->
+    <!--<aop:aspectj-autoproxy/>-->
+
+    <!--<tx:annotation-driven/>-->
+    <!--<context:component-scan common-package="com.ligeng.staticadvisor"/>-->
+        <!--<context:exclude-filter type="annotation" expression="s"/>-->
+        <!--<context:exclude-filter type="annotation" expression="aj"/>-->
+
+    <!--<aop:aspectj-autoproxy/>-->
+    <!--<aop:aspectj-autoproxy proxy-target-class="true"/>-->
+
+    <!--<bean id="myAspect" class="com.ligeng.aoptest.MyAspect"/>-->
+    <!--<bean id="myService" class="com.ligeng.aoptest.MyService"/>-->
+    <!--<aop:config>-->
+        <!--<aop:pointcut id="myPointcut" expression="execution(* com.ligeng.aoptest.MyService.*(int)) and args(age)"/>-->
+        <!--<aop:aspect ref="myAspect">-->
+            <!--<aop:before method="before" pointcut-ref="myPointcut" />-->
+        <!--</aop:aspect>-->
+
+        <!--&lt;!&ndash;<aop:advisor advice-ref=""/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<aop:advisor pointcut-ref="myPointcut" advice-ref="tx-advice"/>&ndash;&gt;-->
+    <!--</aop:config>-->
+
+
+    <!--<bean id="customer2" class="com.ligeng.staticadvisor.Customer">-->
+        <!--<property name="name" value="customer222"/>-->
+        <!--<property name="age" value="25"/>-->
+    <!--</bean>-->
+    <!--<bean id="customer" class="com.ligeng.staticadvisor.Customer">-->
+        <!--<property name="name" value="customer111"/>-->
+        <!--<property name="age" value="25"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="customer" class="com.ligeng.nochange.Mytb2">-->
+    <!--</bean>-->
+    <!--<bean id="shoppingImpl" class="com.ligeng.staticadvisor.ShoppingImpl">-->
+
+        <!--<property name="customer" ref="custmoer"/>-->
+    <!--</bean>-->
+
+    <!--定义通知-->
+    <!--<bean id="shoppingAdvice" class="com.ligeng.staticadvisor.WelcomeAdvice"/>-->
+    <!--<bean id="shoppingAdvice2" class="com.ligeng.staticadvisor.WelcomeAdvice2"/>-->
+    <!--&lt;!&ndash;定义切入点&ndash;&gt;-->
+    <!--<bean id="shoppingPointCutAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">-->
+        <!--<property name="mappedName" value="sell*" />-->
+        <!--<property name="advice" ref="shoppingAdvice"/>-->
+    <!--</bean>-->
+    <!--<bean id="shoppingPointCutAdvisor2" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">-->
+        <!--<property name="mappedName" value="sell*" />-->
+        <!--<property name="advice" ref="shoppingAdvice2"/>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash;定义代理&ndash;&gt;-->
+    <!--<bean id="StaticAdvisorTest" class="org.springframework.aop.framework.ProxyFactoryBean">-->
+        <!--<property name="proxyInterfaces" value="com.ligeng.staticadvisor.Shopping"/>-->
+        <!--<property name="interceptorNames">-->
+            <!--<list>-->
+                <!--<value>shoppingPointCutAdvisor</value>-->
+                <!--<value>shoppingPointCutAdvisor2</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--<property name="target" ref="shoppingImpl"/>-->
+    <!--</bean>-->
+
+
+    <!--<bean id="customer" class="com.ligeng.staticadvisor.Customer">-->
+        <!--<property name="name" value="ligeng"/>-->
+        <!--<property name="age" value="25"/>-->
+    <!--</bean>-->
+
+
+    <!--<bean id="shoppingImpl" class="com.ligeng.staticadvisor.ShoppingImpl">-->
+        <!--<property name="customer">-->
+            <!--<ref bean="customer"/>-->
+            <!--&lt;!&ndash;<ref va="customer"/>&ndash;&gt;-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash; 定义通知 &ndash;&gt;-->
+    <!--<bean id="shoppingAdvise" class="com.ligeng.staticadvisor.WelcomeAdvice"></bean>-->
+    <!--&lt;!&ndash; 定义切入点 &ndash;&gt;-->
+    <!--<bean id="shoppingPointCutAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">-->
+        <!--<property name="mappedName">-->
+            <!--<value>sell*</value>-->
+        <!--</property>-->
+        <!--<property name="advice">-->
+            <!--<ref bean="shoppingAdvise"/>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash;直接定义interceptor&ndash;&gt;-->
+    <!--<bean id="shoppingMethodInterceptor" class="com.ligeng.staticadvisor.ShoppingMethodInterceptor"/>-->
+    <!--&lt;!&ndash; 定义代理 &ndash;&gt;-->
+    <!--<bean id="StaticAdvisorTest" class="org.springframework.aop.framework.ProxyFactoryBean">-->
+        <!--<property name="proxyInterfaces">-->
+            <!--<value>com.ligeng.staticadvisor.Shopping</value>-->
+        <!--</property>-->
+        <!--<property name="interceptorNames">-->
+            <!--<list>-->
+                <!--<value>shoppingMethodInterceptor</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--<property name="target">-->
+            <!--<ref bean="shoppingImpl"/>-->
+        <!--</property>-->
+
+    <!--</bean>-->
+
+
+
+    <!--replace method-->
+    <!--<bean id="replacementComputeValue" class="com.ligeng.ioc.replace.ReplacementComputeValue"/>-->
+    <!--<bean id="myValueCalculator" class="com.ligeng.ioc.replace.MyValueCalculator">-->
+        <!--<replaced-method name="computeValue" replacer="replacementComputeValue">-->
+            <!--<arg-type>String</arg-type>-->
+        <!--</replaced-method>-->
+    <!--</bean>-->
+    <!--BeanPostProcessor-->
+    <!--<bean class="com.ligeng.beanPostProcessor.MyBeanPostProcessor"/>-->
+
+
+    <!--线程池
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" scope="singleton">
+        <property name="corePoolSize" value="5" />
+        <property name="maxPoolSize" value="200" />
+        <property name="queueCapacity" value="200" />
+    </bean>
+
+    <bean id="myService2" class="com.ligeng.service.MyService">
+        <property name="age" value="1,2"/>
+        <property name="clazz" value="com.ligeng.service.MyService"/>
+        <property name="file" value="properties/users.properties"/>
+        <property name="pattern" value="\\*"/>
+    </bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host">
+            <value>${mail.host}</value>
+        </property>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+                <prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+            </props>
+        </property>
+        <property name="username">
+            <value>${mail.user}</value>
+        </property>
+        <property name="password">
+            <value>${mail.password}</value>
+        </property>
+    </bean>
+    -->
+</beans>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+      http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd
+     http://www.springframework.org/schema/mvc
+     http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+
+
+    <mvc:annotation-driven>
+        <!--<mvc:message-converters>-->
+            <!--<bean-->
+        <!--</mvc:message-converters>-->
+    </mvc:annotation-driven>
+
+    <!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- i18n -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="i18n.exception-msg"/>
+    </bean>
+    
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.ligeng.common.interceptor.MyInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+
+    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">-->
+        <!--<property name="messageConverters">-->
+            <!--<list>-->
+                <!--<ref bean="stringHttpMessageConverter"/>-->
+                <!--<ref bean="mappingJacksonHttpMessageConverter"/>-->
+                <!--<ref bean="formHttpMessageConverter"/>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash; 用于使用@ResponseBody后返回中文避免乱码 &ndash;&gt;-->
+    <!--<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">-->
+        <!--<property name="writeAcceptCharset" value="false" />&lt;!&ndash; 用于避免响应头过大 &ndash;&gt;-->
+        <!--<property name="supportedMediaTypes">-->
+        <!--<list>-->
+            <!--<value>application/json;charset=UTF-8</value>-->
+        <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
+        <!--<property name="prefixJson" value="false"/>-->
+        <!--<property name="supportedMediaTypes" value="application/json"/>-->
+    <!--</bean>-->
+    <!--<bean id="formHttpMessageConverter" class="org.springframework.http.converter.FormHttpMessageConverter"/>-->
+
+    <!--<bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">-->
+        <!--<property name="prefixJson" value="false"/>-->
+        <!--<property name="supportedMediaTypes" value="application/json"/>-->
+    <!--</bean>-->
+
+
+    <!--根据后缀名选择不同的视图-->
+    <!--<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">-->
+        <!--<property name="viewResolvers">-->
+            <!--<list>-->
+                <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+                    <!--<property name="prefix" value="/" />-->
+                    <!--<property name="suffix" value=".jsp" />-->
+                <!--</bean>-->
+                <!--<bean class="com.ligeng.common.viewresolver.JsonViewResolver"/>-->
+                <!--<bean class="com.ligeng.common.viewresolver.PdfViewResolver"/>-->
+                <!--<bean class="com.ligeng.common.viewresolver.XlsViewResolver"/>-->
+                <!--<bean class="com.ligeng.common.viewresolver.XmlViewResolver"/>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+
+    <!-- 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600" />
+        <property name="maxInMemorySize" value="4096" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+
+
+</beans>

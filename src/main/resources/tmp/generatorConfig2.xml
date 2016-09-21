@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <properties resource="jdbc.properties"/>
+    <context defaultModelType="conditional" id="saleWrite" targetRuntime="MyBatis3">
+        <property name="renamePlugin.search" value=""/>
+        <property name="renamePlugin.replace" value=""/>
+        <property name="renamePlugin.prefix" value="MBG"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <plugin type="com.dream.utils.mybatis.plugin.MySQLRowBoundsPlugin"/>
+        <plugin type="com.dream.utils.mybatis.plugin.RenamePlugin"/>
+        <plugin type="com.dream.utils.mybatis.plugin.SeparateUserCodePlugin"/>
+        <!-- <plugin type="com.dream.utils.mybatis.plugin.ParentExamplesPlugin">
+             <property name="parentExample" value="com.dream.yuxiaor.entity.work.nochange.BaseExample"/>
+         </plugin>-->
+        <commentGenerator type="com.dream.utils.mybatis.comment.CommentGenerator">
+            <property name="suppressAllComments" value="false"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+        <jdbcConnection connectionURL="${jdbc.url.w}"
+                        driverClass="${jdbc.driverClassName}"
+                        password="${jdbc.password}"
+                        userId="${jdbc.username}"/>
+        <javaTypeResolver type="com.dream.utils.mybatis.type.CustomJavaTypeResolver">
+            <property name="customTypeMap" value="TINYINT:java.lang.Integer,LONGVARCHAR:java.lang.String"/>
+        </javaTypeResolver>
+        <javaModelGenerator targetPackage="com.dream.yuxiaor.entity.work.nochange" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+            <property name="renamePlugin.prefix" value=""/>
+        </javaModelGenerator>
+        <sqlMapGenerator targetPackage="mappers.work.nochange" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+            <property name="separateUserCodePlugin.targetPackage" value="mappers.work"/>
+        </sqlMapGenerator>
+        <javaClientGenerator targetPackage="com.dream.yuxiaor.mappers.work.nochange" targetProject="src/main/java"
+                             type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+            <property name="exampleMethodVisibility" value="public"/>
+            <property name="methodNameCalculator" value="default"/>
+            <property name="separateUserCodePlugin.targetPackage" value="com.dream.yuxiaor.mappers.work"/>
+            <property name="separateUserCodePlugin.search" value="\AMBG"/>
+            <property name="separateUserCodePlugin.replace" value=""/>
+        </javaClientGenerator>
+
+        <!--
+        <table schema="biz_data" tableName="t_wechat_qrcode" domainObjectName="WechatQrcode">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="sceneId" identity="true" sqlStatement="MySql"/>
+        </table>
+         -->
+        <!-- <table schema="biz_data" tableName="t_user_info" domainObjectName="UserInfo">
+             <property name="useActualColumnNames" value="true"/>
+             <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+         </table>
+
+         <table schema="biz_data" tableName="t_building" domainObjectName="Building">
+              <property name="useActualColumnNames" value="true"/>
+              <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+          </table>-->
+
+          <!--<table schema="biz_data" tableName="t_house" domainObjectName="House">
+              <property name="useActualColumnNames" value="true"/>
+              <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+          </table>
+          <table schema="biz_data" tableName="t_house_room" domainObjectName="HouseRoom">
+              <property name="useActualColumnNames" value="true"/>
+              <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+          </table>
+        <table schema="biz_data" tableName="t_floor" domainObjectName="Floor">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>
+        -->
+        <!--
+          <table schema="biz_data" tableName="t_user_wishlist" domainObjectName="UserWishlist">
+              <property name="useActualColumnNames" value="true"/>
+              <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+          </table>
+          <table schema="biz_data" tableName="t_user_inbox" domainObjectName="UserInbox">
+              <property name="useActualColumnNames" value="true"/>
+              <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+          </table>
+          <table schema="biz_data" tableName="t_settings" domainObjectName="Settings">
+              <property name="useActualColumnNames" value="true"/>
+              <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+          </table>
+          <table schema="biz_data" tableName="t_batch_data" domainObjectName="BatchData">
+              <property name="useActualColumnNames" value="true"/>
+              <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+          </table>
+          -->
+        <!--<table schema="biz_data" tableName="t_apt_contract" domainObjectName="AptContract">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>-->
+
+        <!--<table schema="biz_data" tableName="t_apt_contract_payment" domainObjectName="AptContractPayment">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>
+        -->
+       <!-- <table schema="biz_data" tableName="t_apt_contract_payment_detail" domainObjectName="AptContractPaymentDetail">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>-->
+        <!--
+        <table schema="biz_data" tableName="t_first_landlord" domainObjectName="FirstLandLord">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>
+        -->
+        <!--<table schema="biz_data" tableName="t_owner_account_bill" domainObjectName="OwnerAccountBill">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>-->
+        <!--
+        <table schema="biz_data" tableName="t_room_notice" domainObjectName="RoomNotice">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>
+        <table schema="biz_data" tableName="t_flatmate" domainObjectName="Flatmate">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>
+        <table schema="biz_data" tableName="t_estate" domainObjectName="Estate">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>
+        -->
+       <!-- <table schema="biz_data" tableName="t_area" domainObjectName="Area">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>-->
+        <!--<table schema="biz_data" tableName="t_house_image" domainObjectName="HouseImage">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>-->
+        <!--<table schema="biz_data" tableName="t_feed_back" domainObjectName="FeeBack">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>
+        <table schema="biz_data" tableName="t_house_style" domainObjectName="HouseStyle">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>-->
+    </context>
+</generatorConfiguration>
