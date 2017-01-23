@@ -1,0 +1,53 @@
+package com.ydb.demo.base.conf;
+
+import com.ydb.demo.base.mybatis.ShowSqlInterceptor;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+
+import javax.sql.DataSource;
+
+/**
+ * Created by ligeng on 17/1/23.
+ */
+@Configuration
+public class MybatisConfig {
+    @Autowired
+    DataSource dataSource;
+
+    @Bean(name = "sqlSessionFactory")
+    public SqlSessionFactory sqlSessionFactoryBean() throws Exception {
+        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
+        bean.setDataSource(dataSource);
+        bean.setTypeAliasesPackage("tk.mybatis.springboot.model");
+
+//        //分页插件
+//        PageHelper pageHelper = new PageHelper();
+//        Properties properties = new Properties();
+//        properties.setProperty("reasonable", "true");
+//        properties.setProperty("supportMethodsArguments", "true");
+//        properties.setProperty("returnPageInfo", "check");
+//        properties.setProperty("params", "count=countSql");
+//        pageHelper.setProperties(properties);
+
+        //添加插件
+        bean.setPlugins(new Interceptor[]{new ShowSqlInterceptor()});
+
+        //添加XML目录
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+//        try {
+            bean.setTypeAliasesPackage("com.ydb.entity");
+            bean.setMapperLocations(resolver.getResources("classpath:mappers/**/*.xml"));
+//            return bean.getObject();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new RuntimeException(e);
+//        }
+        return bean.getObject();
+    }
+}

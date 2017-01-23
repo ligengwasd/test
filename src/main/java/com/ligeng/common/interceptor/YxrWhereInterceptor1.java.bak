@@ -1,0 +1,98 @@
+package com.ydb.demo.base.mybatis;
+
+
+import com.dream.yuxiaor.utils.ReflectUtil;
+import org.apache.ibatis.executor.statement.BaseStatementHandler;
+import org.apache.ibatis.executor.statement.RoutingStatementHandler;
+import org.apache.ibatis.executor.statement.StatementHandler;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.SqlSource;
+import org.apache.ibatis.plugin.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.sql.Connection;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
+
+/**
+ * Mybatis拦截器, 拦截:
+ * select语句where条件为空
+ * update语句where条件为空
+ * delete语句where条件为空
+ * <p/>
+ * 处理: 目前只是打warning日志,因为项目中存在数据量很少的表读全表的情况(比如加载数据进缓存)
+ * TODO:后续考虑设置拦截器的白名单,不在白名单的触发where条件为空的直接抛出异常.
+ *
+ * @author: xiaobaoqiu  Date: 15-8-22 Time: 上午10:26
+ */
+@Intercepts({@Signature(
+        type = StatementHandler.class,
+        method = "prepare",
+        args = {Connection.class})})
+public class YxrWhereInterceptor1 implements Interceptor {
+
+    private static final Logger logger = LoggerFactory.getLogger(YxrWhereInterceptor1.class);
+
+    @Autowired
+    private DataRuleHandler dataRuleHandler;
+
+    /**
+     * 拦截的 COMMAND 类型
+     */
+    private static final Set<String> INTERCEPTOR_COMMAND = new HashSet() {{
+        add("select");
+        add("update");
+        add("delete");
+    }};
+
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        Object handlerObj = invocation.getTarget();
+        Object[] args = invocation.getArgs();
+
+        //获取实际的StatementHandler
+        if (handlerObj instanceof RoutingStatementHandler) {
+            BaseStatementHandler handler = (BaseStatementHandler) ReflectUtil.getFieldValue(handlerObj, "delegate");
+            MappedStatement mappedStatement = (MappedStatement) ReflectUtil.getFieldValue(handler, "mappedStatement");
+            String mappedId = mappedStatement.getId();
+            //获取SqlCommandType
+            String commandType = mappedStatement.getSqlCommandType().toString().toLowerCase();
+            if (INTERCEPTOR_COMMAND.contains(commandType)) {
+                BoundSql boundSql = handler.getBoundSql();
+                String originSql = boundSql.getSql().trim();  //获取sql
+                String newSql ="";
+                dataRuleHandler.addRuleToSql(boundSql,mappedId);
+                BoundSql newBoundSql = new BoundSql(mappedStatement.getConfiguration(), newSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
+//                BeanUtils.copyProperties(boundSql, newBoundSql);
+                final BoundSql finalBoundSql = newBoundSql;
+                MappedStatement build = new MappedStatement.Builder(mappedStatement.getConfiguration(),
+                        mappedStatement.getId(),
+                        new SqlSource() {
+                            @Override
+                            public BoundSql getBoundSql(Object parameterObject) {
+                                return finalBoundSql;
+                            }
+                        },
+                        mappedStatement.getSqlCommandType()).build();
+//                ReflectUtil.setFieldValue(mappedStatement, "sqlSource", new StaticSqlSource(mappedStatement.getConfiguration(), newSql));
+                args[0] = build;
+                logger.warn("原始SQL={}", newSql);
+            }
+
+        }
+        return invocation.proceed();
+    }
+
+    @Override
+    public Object plugin(Object target) {
+        return Plugin.wrap(target, this);
+    }
+
+    @Override
+    public void setProperties(Properties properties) {
+    }
+}

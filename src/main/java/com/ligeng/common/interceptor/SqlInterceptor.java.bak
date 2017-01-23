@@ -1,0 +1,98 @@
+package com.ydb.demo.base.mybatis;
+
+import java.sql.Connection;
+import java.util.List;
+import java.util.Properties;
+import java.util.StringTokenizer;
+
+import org.apache.ibatis.executor.statement.StatementHandler;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.ParameterMapping;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.plugin.Intercepts;
+import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.plugin.Plugin;
+import org.apache.ibatis.plugin.Signature;
+import org.apache.log4j.Logger;
+import org.springframework.beans.BeanUtils;
+
+/**
+ * mybatis 日志拦截器,只拦截实现了StatementHandler接口,方法参数 是Connection的prepare方法
+ *
+ */
+
+@Intercepts(@Signature(type=StatementHandler.class,method="prepare",args=Connection.class))
+public class SqlInterceptor implements Interceptor {
+
+    protected final Logger log = Logger.getLogger(SqlInterceptor.class);
+
+    /**
+     * 对原方法prepare方法进行拦截增强
+     */
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        // TODO Auto-generated method stub
+        StatementHandler statementHandler = (StatementHandler)invocation.getTarget();
+        BoundSql boundSql = statementHandler.getBoundSql();
+        Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
+        StringBuffer sb = new StringBuffer();
+        sb.append(new StringBuilder().append(removeBreakingWhitespace(boundSql.getSql())).toString());
+        List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+        for (ParameterMapping parameterMapping : parameterMappings) {
+            String param = parameterMapping.getProperty();
+            try {
+                sb.append(new StringBuilder().append("[").append(param).append(":")
+                        .append(BeanUtils.getProperty(parameterObject, param)).append("]").toString());
+            } catch (Exception e) {
+                sb.append(new StringBuilder().append("[").append(param).append(":").append(parameterObject).append("]").toString());
+            }
+
+        }
+
+
+        Object result = null;
+        try {
+            result = invocation.proceed();
+            log.info(sb.toString());
+        } catch (Exception e) {
+            log.error(sb.toString());
+        }
+
+
+        return result;
+    }
+
+    /**
+     * 去除空格和换行
+     * @param original 原始字符串
+     * @return
+     */
+    public String removeBreakingWhitespace(String original){
+        StringTokenizer stringTokenizer = new StringTokenizer(original);
+        StringBuffer sb = new StringBuffer();
+        while(stringTokenizer.hasMoreTokens()){
+            sb.append(stringTokenizer.nextToken());
+        }
+        return sb.toString();
+    }
+
+
+
+    /**
+     * 返回对象,如果返回原对象不拦截,如果返回代理则拦截
+     */
+    @Override
+    public Object plugin(Object object) {
+        // TODO Auto-generated method stub
+        return Plugin.wrap(object, this);
+    }
+    /**
+     * 此方法用来获取配置参数
+     */
+    @Override
+    public void setProperties(Properties properties) {
+        // TODO Auto-generated method stub
+
+    }
+
+}
